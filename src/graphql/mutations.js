@@ -1,6 +1,7 @@
 const { User, Question, Quiz, Submission } = require('../models')
 const { QuestionInputType, AnswerInputType } = require('./types')
 const { GraphQLString, GraphQLList, GraphQLNonNull } = require('graphql')
+const { createJwtToken } = require('../util/auth')
 
 const register = {
     type: GraphQLString,
@@ -11,6 +12,7 @@ const register = {
         password: { type: GraphQLString }
     },
     async resolve(parent, args) {
+        console.log('REGISTERING IN GRAPHQL')
         const { username, email, password } = args
 
         const checkUser = await User.findOne({ email })
@@ -29,7 +31,7 @@ const register = {
         await newUser.save()
 
         /* TODO: Generate web token */
-        return newUser.username
+        return createJwtToken(newUser)
     }
 }
 
@@ -49,7 +51,7 @@ const login = {
         }
 
         /* TODO: Generate web tokens */
-        return user.username
+        return createJwtToken(user)
     }
 }
 
