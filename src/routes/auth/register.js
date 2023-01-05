@@ -13,7 +13,7 @@ module.exports = async (req, res) => {
     `
 
     try {
-        const { data } = await axios.post('http://localhost:3000/graphql', {
+        const { data } = await axios.post(process.env.GRAPHQL_ENDPOINT, {
             query: mutation,
             variables: {
                 email: req.body.email,

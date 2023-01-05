@@ -8,6 +8,8 @@ const unprotectedRoutes = [
 
 const authenticate = (req, res, next) => {
     const token = req.cookies?.jwtToken || ""
+    console.log(token)
+    console.log("RUNNING")
 
     try {
         const verified = jwt.verify(token, process.env.JWT_SECRET)
@@ -16,6 +18,7 @@ const authenticate = (req, res, next) => {
         console.log('User verified!', verified)
         next()
     } catch(e) {
+        console.log(e)
         console.log('User verification failed.')
 
         if (unprotectedRoutes.includes(req.path)) {

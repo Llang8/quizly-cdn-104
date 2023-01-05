@@ -66,6 +66,7 @@ const createQuiz = {
         userId: { type: GraphQLString }
     },
     async resolve(parent, args) {
+        console.log("ARGS", args)
         const slugify = args.title.toLowerCase()
             .replace(/[^\w ]+/g, '')
             .replace(/[ ]/g, '-')

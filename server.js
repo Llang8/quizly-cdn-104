@@ -5,6 +5,7 @@ const { graphqlHTTP } = require('express-graphql')
 const schema = require('./src/graphql/schema')
 const cookieParser = require('cookie-parser')
 const { authenticate } = require('./src/middleware/auth')
+const { userData } = require('./src/middleware/userData')
 
 dotenv.config()
 
@@ -14,20 +15,19 @@ app.set('view engine', 'ejs')
 app.set('views', './src/templates/views')
 
 app.use(cookieParser())
-app.use(authenticate)
-
-connectDB()
 
 app.use('/graphql', graphqlHTTP({
     schema,
     graphiql: true
 }))
 
-app.use(express.urlencoded({ extended: true }))
+app.use(authenticate)
+app.use(userData)
 
-app.get('/', (req,res) => {
-    res.send('Hello world')
-}) 
+connectDB()
+
+
+app.use(express.urlencoded({ extended: true }))
 
 /* Initialize our routes */
 require('./src/routes')(app)
